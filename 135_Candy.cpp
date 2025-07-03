@@ -1,12 +1,12 @@
 #include <iostream>
 #include <vector>
 using namespace std;
-class Solution
+class Solution1
 {
 public:
-    int candy(vector<int> &arr)
+    int candy(vector<int> &ratings)
     {
-        int n = arr.size();
+        int n = ratings.size();
         vector<int> left(n);
         vector<int> right(n);
         left[0] = 1;
@@ -15,7 +15,7 @@ public:
         // check for left neighbour child's rating
         for (int i = 1; i < n; i++)
         {
-            if (arr[i] > arr[i - 1])
+            if (ratings[i] > ratings[i - 1])
             {
                 left[i] = left[i - 1] + 1;
             }
@@ -27,7 +27,7 @@ public:
         // check for right neighbour child's rating
         for (int i = n - 2; i >= 0; i--)
         {
-            if (arr[i] > arr[i + 1])
+            if (ratings[i] > ratings[i + 1])
             {
                 right[i] = right[i + 1] + 1;
             }
@@ -42,6 +42,44 @@ public:
             ans += max(left[i], right[i]);
         }
         return ans;
+    }
+};
+/************************************************************************************************ */
+/************************************************************************************************ */
+/************************************************************************************************ */
+/************************************************************************************************ */
+/************************************************************************************************ */
+class Solution2
+{
+public:
+    int candy(vector<int> &ratings)
+    {
+        int sum = 1, i = 1, n = ratings.size();
+        while (i < n)
+        {
+            if (ratings[i] == ratings[i - 1])
+            {
+                sum += 1;
+                i++;
+            }
+            int peak = 1;
+            while (i < n && ratings[i] > ratings[i - 1])
+            {
+                peak += 1;
+                sum += peak;
+                i++;
+            }
+            int down = 1;
+            while (i < n && ratings[i] < ratings[i - 1])
+            {
+                sum += down;
+                i++;
+                down++;
+            }
+            if (down > peak)
+                sum += down - peak;
+        }
+        return sum;
     }
 };
 int main()
